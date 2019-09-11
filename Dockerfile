@@ -21,7 +21,7 @@ RUN apt-get update && \
       libopenxpki-perl \
       openxpki-i18n \
       openca-tools \
-      openjdk-12-jre \
+      openjdk-8-jre \
       mysql-client && \
     a2enmod fcgid && \
     a2enmod rpaf && \
