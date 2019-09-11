@@ -10,7 +10,7 @@ RUN apt-get update && \
     echo "deb http://packages.openxpki.org/debian/ jessie release" > /etc/apt/sources.list.d/openxpki.list && \
     echo "deb http://httpredir.debian.org/debian jessie non-free" >> /etc/apt/sources.list && \
     apt-get update && \
-    apt-get install -y locales && \
+    apt-get install -y locales apt-utils && \
     echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen && \
@@ -21,7 +21,6 @@ RUN apt-get update && \
       libopenxpki-perl \
       openxpki-i18n \
       openca-tools \
-      openjdk-8-jre \
       mysql-client && \
     a2enmod fcgid && \
     a2enmod rpaf && \
