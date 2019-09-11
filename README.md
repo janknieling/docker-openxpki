@@ -16,6 +16,8 @@ The OpenXPKI sampleconfig.sh will be called after the database has been created 
 
     git clone https://github.com/janknieling/docker-openxpki.git
     cd docker-openxpki
+    export DB_ROOT_PASSWORD=`pwgen -Bs1 22`
+    export DB_OPENXPKI_PASSWORD=`pwgen -Bs1 22`
     docker-compose up -d && docker-compose logs -f
     
 Start browser and navigate to http://127.0.0.1:8080/openxpki
@@ -23,11 +25,12 @@ Start browser and navigate to http://127.0.0.1:8080/openxpki
 # Userdata
 
 All userdata is either stored in the MySql database or as files in the openxpki configuration. When using the docker-compose.yml, 
-all folders, including configuration, logs and MySql database files are stored as folders in the same directory as the docker-compose.yml.
+all folders, including configuration, logs and MySql database files are stored as docker volumes.
 
-  - mysql_data
-  - config
-  - logs
+  - openxpki-config
+  - openxpki-apache2-logs
+  - openxpki-logs
+  - openxpki-percona
 
 # Configuration
 
