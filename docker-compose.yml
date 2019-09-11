@@ -1,25 +1,26 @@
 db:
-  image: mysql:5.5
+  image: percona:latest
   restart: always
   volumes:
-    - ./mysql-data:/var/lib/mysql
+    - openxpki-percona:/var/lib/mysql
   environment:
-    - MYSQL_ROOT_PASSWORD=my-super-secret-password
+    - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
 web:
-  image: dime/openxpki:latest
-  dns: 8.8.8.8
+  image: janknieling/openxpki:latest
+  dns: 1.1.1.1
   hostname: pki.example.org
   restart: always
   ports:
-    - "127.0.0.1:8080:80"
+    - "8080:80"
+    - "8443:443"
   links:
     - db:mysql
   volumes:
-    - ./config:/etc/openxpki
-    - ./logs/apache2:/var/log/apache2
-    - ./logs/openxpki:/var/log/openxpki
+    - openxpki-config:/etc/openxpki
+    - openxpki-apache2-logs:/var/log/apache2
+    - openxpki-logs:/var/log/openxpki
   environment:
     - APP_DB_NAME=openxpki
     - APP_DB_USER=openxpki
     - APP_DB_PASS=openxpki
-    - APP_DB_ROOT_PASS=my-super-secret-password
+    - APP_DB_ROOT_PASS=${DB_PASSWORD}

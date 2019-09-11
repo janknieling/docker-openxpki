@@ -14,7 +14,7 @@ This docker-compose contains default credentials for the database, that can be c
 When starting the containers with docker-compose up, a database container is created and linked to openxpki as mysql.
 The OpenXPKI sampleconfig.sh will be called after the database has been created and initialized.
 
-    git clone https://github.com/DimeOne/docker-openxpki.git
+    git clone https://github.com/janknieling/docker-openxpki.git
     cd docker-openxpki
     docker-compose up -d && docker-compose logs -f
     
@@ -36,14 +36,17 @@ There are three parts of configuration that have to be considered. But will be c
 ## Database configuration
 
 This container is designed to run alongside a mysql container or atleast have the connection details configured using environment variables.
-When using the docker-compose.yml, valid default values will be supplied, but should be changed before starting the containers the first time.
+When using the docker-compose.yml, valid default values will be supplied. A root password for the MySQL database has to be generated via the following commands: 
+
+  1. export DB_ROOT_PASSWORD=`pwgen -Bs1 22`
+  2. export DB_OPENXPKI_PASSWORD=`pwgen -Bs1 22`
 
   - APP_DB_NAME=openxpki
   - APP_DB_HOST=mysql
   - APP_DB_PORT=3306
   - APP_DB_USER=openxpki
-  - APP_DB_PASS=openxpki
-  - APP_DB_ROOT_PASS=super-secret-password
+  - APP_DB_PASS = ${DB_OPENXPKI_PASSWORD} (set this before you run the docker-compose.yml via "export DB_OPENXPKI_PASSWORD=`pwgen -Bs1 22`")
+  - APP_DB_ROOT_PASS=${DB_ROOT_PASSWORD}
 
 The mysql port does not have to be exported when linked.
 
@@ -111,30 +114,10 @@ Show the versions of the used tools.
   - APP_DB_HOST = mysql
   - APP_DB_PORT = 3306
   - APP_DB_USER = openxpki
-  - APP_DB_PASS = openxpki
-  - APP_DB_ROOT_PASS = super-secret-password
+  - APP_DB_PASS = ${DB_OPENXPKI_PASSWORD} (set this before you run the docker-compose.yml via "export DB_OPENXPKI_PASSWORD=`pwgen -Bs1 22`")
+  - APP_DB_ROOT_PASS = ${DB_ROOT_PASSWORD} (set this before you run the docker-compose.yml via "export DB_ROOT_PASSWORD=`pwgen -Bs1 22`")
 
 
 # ToDo:
 
-  - So much documentation.
-  - Generalize configuration for other dbs?
-
-
-# Known Issues:
-  - Unable to run openxpki start --foreground properly
-    - See: https://github.com/openxpki/openxpki/issues/538
-    - might cause problems with process reaping and leave zombies
-    - prevents running the processes through an external supervisor like s6 or supervisord
-
-# Sources:
-  - [OpenXPKI manual][1]
-  - [OpenXPKI sampleconfig.sh][2]
-  - [OpenXPKI Official Repository][3]
-  - [OpenXPKI Docker container template by jetpulp][4]
-
-
-[1]: http://openxpki.readthedocs.io/en/latest/ (OpenXPKI manual)
-[2]: https://github.com/openxpki/openxpki/blob/develop/config/sampleconfig.sh (OpenXPKI latest sampleconfig.sh)
-[3]: https://github.com/openxpki/openxpki (OpenXPKI Official Repository)
-[4]: https://github.com/jetpulp/docker-openxpki (OpenXPKI Docker Container by jetpulp)
+  - Apache2 SSL configuration and automated SSL/TLS certificate generation for the apache2 webserver

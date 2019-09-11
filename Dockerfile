@@ -1,8 +1,8 @@
 FROM debian:jessie
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG de_DE.UTF-8
+ENV LANGUAGE de_DE
+ENV LC_ALL de_DE.UTF-8
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y wget && \
@@ -11,6 +11,7 @@ RUN apt-get update && \
     echo "deb http://httpredir.debian.org/debian jessie non-free" >> /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y locales && \
+    echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -20,9 +21,11 @@ RUN apt-get update && \
       libopenxpki-perl \
       openxpki-i18n \
       openca-tools \
+      openjdk-12-jre \
       mysql-client && \
     a2enmod fcgid && \
     a2enmod rpaf && \
+    a2enmod ssl && \
     a2dismod status && \
     apt-get remove -y wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
