@@ -4,7 +4,7 @@ db:
   volumes:
     - openxpki-percona:/var/lib/mysql
   environment:
-    - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
 web:
   image: janknieling/openxpki:latest
   dns: 1.1.1.1
@@ -22,5 +22,5 @@ web:
   environment:
     - APP_DB_NAME=openxpki
     - APP_DB_USER=openxpki
-    - APP_DB_PASS=openxpki
-    - APP_DB_ROOT_PASS=${DB_PASSWORD}
+    - APP_DB_PASS=${DB_OPENXPKI_PASSWORD}
+    - APP_DB_ROOT_PASS=${DB_ROOT_PASSWORD}
